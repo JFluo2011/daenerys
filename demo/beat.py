@@ -2,8 +2,8 @@ import random
 
 from kombu import Connection
 
-from messaging import publish
-from config import BROKER_URI
+from .messaging import publish
+from .config import BROKER_URI
 
 
 PACKAGES = ['httpie', 'django', 'requests', 'keras',

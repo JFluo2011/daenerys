@@ -1,5 +1,5 @@
 import urllib
-from urlparse import urlparse, ParseResult
+from urllib.parse import urlparse, ParseResult
 
 from werkzeug.utils import find_modules, import_string
 from werkzeug.urls import url_decode, url_encode
@@ -29,8 +29,8 @@ class Daenerys(object):
         return url, url_adapter, query_args
 
     def validate_url(self, url):
-        url_path = urllib.quote(url.path, safe=b"/%")
-        url_query = urllib.quote(url.query, safe=b"?=&")
+        url_path = urllib.parse.quote(url.path, safe=b"/%")
+        url_query = urllib.parse.quote(url.query, safe=b"?=&")
 
         url = ParseResult(url.scheme, url.netloc, url_path,
                           url.params, url_query, url.fragment)
@@ -63,7 +63,7 @@ class Daenerys(object):
             return self.dispatch_url(e.new_url)
 
     def mount_site(self, site):
-        if isinstance(site, basestring):
+        if isinstance(site, str):
             site = import_string(site)
         site.play_actions(target=self)
 

@@ -1,11 +1,11 @@
 import ast
-import cPickle
+import pickle
 from datetime import datetime
 
 import redis
 from mongoengine import *
 
-from config import READY_STATES, PENDING, SUCCESS, FAILURE
+from .config import READY_STATES, PENDING, SUCCESS, FAILURE
 
 connect('zhihulive')
 r = redis.StrictRedis(host='localhost', port=6379, db=0)

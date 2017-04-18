@@ -3,15 +3,15 @@ import cPickle
 
 from kombu import Connection, Exchange, Queue
 
-from config import BROKER_URI, BACKEND_URI, SUCCESS, PENDING
-from backend import Backend, r
+from .config import BROKER_URI, BACKEND_URI, SUCCESS, PENDING
+from .backend import Backend, r
 
 exchange = Exchange('web', 'direct', durable=True)
 queue = Queue('web_queue', exchange=exchange, routing_key='pypi')
 
 
 def publish(conn, name):
-    print 'PUT {}'.format(name)
+    print('PUT {}'.format(name))
     producer = conn.Producer(serializer='json')
     payload = {'name': name}
     producer.publish(payload, exchange=exchange, routing_key='pypi',

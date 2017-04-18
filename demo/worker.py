@@ -18,7 +18,7 @@ def process_task(body, message):
     pkg = app.dispatch_url(url)
     Backend.mark_as_done(name, pkg.info, worker_id=worker_id, state=SUCCESS)
     message.ack()
-    print 'FINISHED: {}'.format(name)
+    print('FINISHED: {}'.format(name))
 
 
 def main():

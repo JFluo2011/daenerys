@@ -1,6 +1,6 @@
 import sys
 
-from app import app
+from .app import app
 
 context = {"go": app.dispatch_url}
 
@@ -11,7 +11,7 @@ def main():
     pkg = app.dispatch_url(url)
     context['pkg'] = pkg
     for item in pkg.to_dict().items():
-        print '{} = {}'.format(*item)
+        print('{} = {}'.format(*item))
 
     def prepare_readline():
         import os

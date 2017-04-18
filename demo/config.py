@@ -7,3 +7,8 @@ FAILURE = 2
 REVOKED = 3
 
 READY_STATES = frozenset({SUCCESS, FAILURE, REVOKED})
+
+try:
+    from .local_config import *
+except:
+    pass
