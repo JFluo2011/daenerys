@@ -1,10 +1,10 @@
 import time
-import cPickle
+import pickle
 
 from kombu import Connection, Exchange, Queue
 
-from .config import BROKER_URI, BACKEND_URI, SUCCESS, PENDING
-from .backend import Backend, r
+from config import BROKER_URI, SUCCESS, PENDING
+from backend import Backend, r
 
 exchange = Exchange('web', 'direct', durable=True)
 queue = Queue('web_queue', exchange=exchange, routing_key='pypi')
@@ -27,10 +27,11 @@ def consumer(conn, callbacks):
 
 def sync_get(name, interval=0.5):
     with Connection(BROKER_URI) as conn:
+        print(BROKER_URI)
         publish(conn, name)
         while 1:
             rs = r.get(name)
-            if rs and Backend.from_json(cPickle.loads(rs)).status == SUCCESS:
+            if rs and Backend.from_json(pickle.loads(rs)).status == SUCCESS:
                 break
             time.sleep(interval)
         item = Backend.get(name)

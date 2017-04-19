@@ -5,9 +5,9 @@ from datetime import datetime
 import redis
 from mongoengine import *
 
-from .config import READY_STATES, PENDING, SUCCESS, FAILURE
+from config import READY_STATES, PENDING, SUCCESS, FAILURE, MONGODB_PORT, MONGODB_HOST
 
-connect('zhihulive')
+connect('zhihulive', host=MONGODB_HOST, port=MONGODB_PORT)
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
@@ -35,14 +35,14 @@ class Backend(Document):
     def get(cls, name):
         rs = r.get(name)
         if rs:
-            return cls.from_json(cPickle.loads(rs))
+            return cls.from_json(pickle.loads(rs))
         try:
             item = cls.objects.get(name=name)
         except DoesNotExist:
             pass
         else:
             if item:
-                r.set(name, cPickle.dumps(item.to_json()))
+                r.set(name, pickle.dumps(item.to_json()))
                 return item
 
     @classmethod
@@ -51,16 +51,16 @@ class Backend(Document):
         if item:
             item.update(result=result, status=state, worker_id=worker_id)
             item = cls.objects.get(name=name)
-            r.set(name, cPickle.dumps(item.to_json()))
+            r.set(name, pickle.dumps(item.to_json()))
             return True
         return False
 
     @classmethod
-    def mark_as_failure(self, name, traceback, worker_id, state=FAILURE):
+    def mark_as_failure(cls, name, traceback, worker_id, state=FAILURE):
         item = cls.objects.get(name=name)
         if item:
             item.update(traceback=traceback, status=state, worker_id=worker_id)
             item = cls.objects.get(name=name)
-            r.set(name, cPickle.dumps(item.to_json()))
+            r.set(name, pickle.dumps(item.to_json()))
             return True
         return False

@@ -1,6 +1,9 @@
 BROKER_URI = 'redis://localhost:6379'
 BACKEND_URI = 'mongodb://localhost:27017'
 
+MONGODB_HOST = 'localhost'
+MONGODB_PORT = 27017
+
 PENDING = 0
 SUCCESS = 1
 FAILURE = 2
@@ -9,6 +12,6 @@ REVOKED = 3
 READY_STATES = frozenset({SUCCESS, FAILURE, REVOKED})
 
 try:
-    from .local_config import *
+    from local_config import *
 except:
     pass

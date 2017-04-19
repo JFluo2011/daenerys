@@ -2,8 +2,8 @@ import random
 
 from kombu import Connection
 
-from .messaging import publish
-from .config import BROKER_URI
+from messaging import publish
+from config import BROKER_URI
 
 
 PACKAGES = ['httpie', 'django', 'requests', 'keras',
@@ -15,6 +15,4 @@ if __name__ == '__main__':
         random.shuffle(PACKAGES)
         for p in PACKAGES:
             publish(conn, p)
-
-
 

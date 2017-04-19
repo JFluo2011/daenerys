@@ -4,7 +4,7 @@ from kombu import Connection
 from mongoengine.connection import connect, disconnect
 
 from app import app
-from config import BROKER_URI, SUCCESS
+from config import BROKER_URI, SUCCESS, MONGODB_HOST, MONGODB_PORT
 from backend import Backend
 from messaging import consumer
 
@@ -23,7 +23,7 @@ def process_task(body, message):
 
 def main():
     disconnect()
-    connect('zhihulive')
+    connect('zhihulive', host=MONGODB_HOST, port=MONGODB_PORT)
     with Connection(BROKER_URI) as conn:
         consumer(conn, [process_task])
 
